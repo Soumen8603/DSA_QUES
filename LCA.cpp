@@ -4,8 +4,8 @@ TreeNode* lca(TreeNode* root,int p,int q){
             return root;
         }
 
-        TreeNode* left = (root->left,p,q);
-        TreeNode* right = (root->right,p,q);
+        TreeNode* left = lca(root->left,p,q);
+        TreeNode* right = lca(root->right,p,q);
 
         if(left == NULL){
             return right;
