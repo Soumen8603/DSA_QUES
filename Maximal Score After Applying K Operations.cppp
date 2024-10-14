@@ -1,0 +1,27 @@
+long long ceil(long long num){
+    if(num % 3 == 0){
+        return num / 3;
+    }
+    else{
+
+        return num / 3 + 1;
+    }
+}
+    long long maxKelements(vector<int>& nums, int k) {
+        priority_queue<int> maxHeap;
+        for(int  i = 0;i < nums.size();i++){
+            maxHeap.push(nums[i]);
+        }
+
+        int count = 0;
+        long long ans = 0;
+        while(count < k){
+            long long element =  maxHeap.top();
+             maxHeap.pop();
+             ans += element;
+             long long val = ceil(element);
+             maxHeap.push(val);
+             count++;
+        }
+        return ans;
+    }
