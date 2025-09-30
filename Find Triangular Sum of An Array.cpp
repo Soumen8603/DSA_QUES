@@ -1,0 +1,15 @@
+ int triangularSum(vector<int>& nums) {
+        int n = nums.size();
+        vector<int>ans(n -1);
+        if(n == 1)return nums[0];
+        while(n != 1){
+            for(int i = 0;i < n-1;i++){
+                ans[i] = (nums[i] + nums[i + 1]) % 10;
+            }
+            n--;
+            nums.resize(n);
+            nums = ans;
+            ans.resize(n-1,0);
+        }
+        return nums[0];
+    }
