@@ -1,30 +1,17 @@
- int maxArea(vector<int>& height) {
-        int low = 0;
-        int high = height.size() - 1;
-        int mini = min(height[low], height[high]);
-        int miniIndex;
-
-        if (mini == height[low]) {
-            miniIndex = low;
-        } else {
-            miniIndex = high;
-        }
-        int res = mini * (high - low);
-        while (low < high) {
-            if (miniIndex == high) {
-                high--;
-            } else {
-                low++;
+int maxArea(vector<int>& height) {
+        int left = 0;
+        int n = height.size();
+        int right = n -1;
+        int maxArea = INT_MIN;
+        while(left < right){
+            int minHeight = min(height[left],height[right]);
+            maxArea = max(maxArea ,minHeight * (right - left));
+            if(height[left] < height[right]){
+                left++;
             }
-            mini = min(height[low], height[high]);
-            if (mini * (high - low) > res) {
-                res = mini * (high - low);
-            }
-            if (mini == height[low]) {
-                miniIndex = low;
-            } else {
-                miniIndex = high;
+            else{
+                right--;
             }
         }
-        return res;
+        return maxArea;
     }
