@@ -1,41 +1,27 @@
- ListNode* rotateRight(ListNode* head, int k) {
-        if (k == 0)
-            return head;
-        int length = 0;
-        ListNode* curr = head;
-        while (curr != NULL) {
+ListNode* rotateRight(ListNode* head, int k) {
+        if (!head || !head->next || k == 0) {
+        return head;
+    }
+        ListNode* tail = head;
+        int length = 1;
+        while (tail->next) {
+            tail = tail->next;
             length++;
-            curr = curr->next;
-        }
-        if (length == 0 || length == 1)
-            return head;
-        if (k == length || k % length == 0) {
-            return head;
-        }
-        if (k > length) {
-            k = k % length;
-        }
-        ListNode* dummy = new ListNode(0);
-        dummy->next = head;
-        ListNode* currHead = head;
-        curr = head;
-        int count = 1;
-        while (count < length - k) {
-            curr = curr->next;
-            count++;
-        }
-        ListNode* endNode = curr;
-        curr = curr->next;
-        ListNode* newNodeprev = curr;
-        ListNode* newNodeend = curr;
-        curr = curr->next;
-        while (curr != NULL) {
-            newNodeend = curr;
-            curr = curr->next;
         }
 
-        endNode->next = NULL;
-        dummy->next = newNodeprev;
-        newNodeend->next = currHead;
-        return dummy->next;
+        k = k % length;
+        if (k == 0) {
+            return head;
+        }
+
+        ListNode* newTail = head;
+        for (int i = 0; i < length - k - 1; ++i) {
+            newTail = newTail->next;
+        }
+
+        ListNode* newHead = newTail->next;
+        newTail->next = nullptr;
+        tail->next = head;
+
+        return newHead;
     }
