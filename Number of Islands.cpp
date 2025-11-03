@@ -1,35 +1,41 @@
-void DFS(vector<vector<char> >& M, int i, int j, int ROW,
-         int COL)
-{
-    // Base condition
-    // if i less than 0 or j less than 0 or i greater than
-    // ROW-1 or j greater than COL-  or if M[i][j] != 1 then
-    // we will simply return
-    if (i < 0 || j < 0 || i > (ROW - 1) || j > (COL - 1)
-        || M[i][j] != '1') {
+class Solution {
+private:
+    void dfs(int i, int j, vector<vector<char>>& grid, int m, int n) {
+        if (grid[i][j] == '1') {
+            grid[i][j] = '0';
+
+            // up side
+            if (i - 1 >= 0) {
+                dfs(i - 1, j, grid, m, n);
+            }
+            // down side
+            if (i + 1 < m) {
+                dfs(i + 1, j, grid, m, n);
+            }
+            // left side
+            if (j - 1 >= 0) {
+                dfs(i, j - 1, grid, m, n);
+            }
+            // right side
+            if (j + 1 < n) {
+                dfs(i, j + 1, grid, m, n);
+            }
+        }
         return;
     }
- 
-    if (M[i][j] == '1') {
-        M[i][j] = '0';
-        DFS(M, i + 1, j, ROW, COL); // right side traversal
-        DFS(M, i - 1, j, ROW, COL); // left side traversal
-        DFS(M, i, j + 1, ROW, COL); // upward side traversal
-        DFS(M, i, j - 1, ROW,COL); // downward side traversal
-        
-    }
-}
-  int numIslands(vector<vector<char>>& grid) {
-        int row=grid.size();
-        int ans=0;
-        int col=grid[0].size();
-        for(int i=0;i<row;i++){
-            for(int j=0;j<col;j++){
-                if(grid[i][j]=='1'){
-                    DFS(grid,i,j,row,col);
-                    ans++;
+
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int count = 0;
+        int m = grid.size(), n = grid[0].size();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    count += 1;
+                    dfs(i, j, grid, m, n);
                 }
             }
         }
-        return ans;
+        return count;
     }
+};
