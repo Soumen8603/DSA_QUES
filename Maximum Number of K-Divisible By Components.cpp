@@ -1,33 +1,38 @@
- int maxKDivisibleComponents(int n, vector<vector<int>>& edges,
-                                vector<int>& values, int k) {
-        int componentCount = 0;
-        vector<vector<int>> adjacencyList(n);
+class Solution {
+private:
+    int dfs(vector<int>& values, unordered_map<int, vector<int>>& adjList,
+             int curr, int parent, int sum, int& ans, int k) {
 
-        for (const auto& edge : edges) {
-            int nodeA = edge[0];
-            int nodeB = edge[1];
-            adjacencyList[nodeA].push_back(nodeB);
-            adjacencyList[nodeB].push_back(nodeA);
+        sum = values[curr];
+
+        for (int neighbor : adjList[curr]) {
+
+            if (neighbor != parent) {
+                sum += dfs(values, adjList, neighbor, curr, sum, ans, k);
+                sum = sum % k;
+            }
+        }
+        sum = sum % k;
+        if (sum == 0) {
+            ans++;
+        }
+        return sum;
+    }
+
+public:
+    int maxKDivisibleComponents(int n, vector<vector<int>>& edges,
+                                vector<int>& values, int k) {
+        unordered_map<int, vector<int>> adjList;
+        for (auto& edge : edges) {
+            adjList[edge[0]].push_back(edge[1]);
+            adjList[edge[1]].push_back(edge[0]);
         }
 
-        function<long long(int, int)> dfs = [&](int currentNode,
-                                                int parentNode) -> long long {
-            long long subtreeSum = values[currentNode];
-
-            for (int childNode : adjacencyList[currentNode]) {
-                if (childNode != parentNode) {
-                    subtreeSum += dfs(childNode, currentNode);
-                }
-            }
-
-            if (subtreeSum % k == 0) {
-                componentCount++;
-            }
-
-            return subtreeSum;
-        };
-
-        dfs(0, -1);
-
-        return componentCount;
+        int currNode = 0;
+        int sum = 0;
+        int ans = 0;
+        int parent = -1;
+        int val = dfs(values, adjList, currNode, parent, sum, ans, k);
+        return ans;
     }
+};
